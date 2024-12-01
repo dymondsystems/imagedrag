@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Drag and Drop Stock Images</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      text-align: center;
+      border: 2px dashed #ccc;
+      padding: 20px;
+      background-color: #fff;
+      width: 80%;
+      max-width: 600px;
+      border-radius: 8px;
+    }
+
+    .drop-area {
+      width: 100%;
+      height: 200px;
+      border: 2px dashed #007BFF;
+      background-color: #f9f9f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #007BFF;
+      margin-bottom: 20px;
+    }
+
+    .drop-area.dragover {
+      background-color: #e0f7ff;
+      border-color: #0099cc;
+    }
+
+    .stock-images img {
+      width: 100%;
+      max-width: 150px;
+      margin: 10px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+    }
+
+    .upload-form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .upload-form input[type="file"] {
+      display: none;
+    }
+
+    .upload-btn {
+      background-color: #007BFF;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 16px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Drag and Drop Your Stock Images</h2>
+    <div class="drop-area" id="drop-area">
+      <p>Drag and drop images here</p>
+    </div>
+
+    <div class="stock-images">
+      <h3>Select a Stock Image</h3>
+      <img src="https://via.placeholder.com/150/FF5733/FFFFFF?text=Stock+1" alt="Stock Image 1" class="stock-image">
+      <img src="https://via.placeholder.com/150/33FF57/FFFFFF?text=Stock+2" alt="Stock Image 2" class="stock-image">
+      <img src="https://via.placeholder.com/150/5733FF/FFFFFF?text=Stock+3" alt="Stock Image 3" class="stock-image">
+    </div>
+
+    <form id="upload-form" class="upload-form" method="POST" action="/submit" enctype="multipart/form-data">
+      <input type="file" id="file-input" name="file" multiple accept="image/*">
+      <button type="button" class="upload-btn" onclick="document.getElementById('file-input').click();">Choose Files</button>
+    </form>
+  </div>
+
+  <script>
+    // JavaScript for drag-and-drop functionality
+    const dropArea = document.getElementById('drop-area');
+
+    dropArea.addEventListener('dragover', (event) => {
+      event.preventDefault();
+      dropArea.classList.add('dragover');
+    });
+
+    dropArea.addEventListener('dragleave', () => {
+      dropArea.classList.remove('dragover');
+    });
+
+    dropArea.addEventListener('drop', (event) => {
+      event.preventDefault();
+      dropArea.classList.remove('dragover');
+
+      const files = event.dataTransfer.files;
+      if (files.length > 0) {
+        const fileInput = document.getElementById('file-input');
+        fileInput.files = files;  // Assign dropped files to the file input
+        alert('Files added to the form!');
+      }
+    });
+
+    // Handling file input from the button
+    const fileInput = document.getElementById('file-input');
+    fileInput.addEventListener('change', (event) => {
+      const files = event.target.files;
+      if (files.length > 0) {
+        alert('Files selected!');
+      }
+    });
+  </script>
+</body>
+</html>
